@@ -1,62 +1,10 @@
-// const multer = require('multer');
-// const { GridFsStorage } = require('multer-gridfs-storage');
-// const crypto = require('crypto');
-// const path = require('path');
-// const mongoose = require('mongoose');
-// const dotenv = require('dotenv');
-
-// dotenv.config();
-
-// // Create storage engine
-// const storage = new GridFsStorage({
-//     url: process.env.MONGO_URI,
-//     file: (req, file) => {
-//         return new Promise((resolve, reject) => {
-//             crypto.randomBytes(16, (err, buf) => {
-//                 if (err) {
-//                     return reject(err);
-//                 }
-//                 const filename = buf.toString('hex') + path.extname(file.originalname);
-//                 const fileInfo = {
-//                     filename: filename,
-//                     bucketName: 'uploads'
-//                 };
-//                 resolve(fileInfo);
-//             });
-//         });
-//     }
-// });
-
-// const upload = multer({ storage });
-
-// const uploadFile = (req, res) => {
-//     res.status(201).json({ file: req.file });
-// };
-
-// const getFile = async (req, res) => {
-//     const conn = mongoose.connection;
-//     const gfs = new mongoose.mongo.GridFSBucket(conn.db, {
-//         bucketName: 'uploads'
-//     });
-
-//     gfs.find({ filename: req.params.filename }).toArray((err, files) => {
-//         if (!files || files.length === 0) {
-//             return res.status(404).json({ err: 'No files exist' });
-//         }
-
-//         gfs.openDownloadStreamByName(req.params.filename).pipe(res);
-//     });
-// };
-
-// module.exports = { upload, uploadFile, getFile };
-
-
-const multer = require('multer');
-const { GridFsStorage } = require('multer-gridfs-storage');
-const crypto = require('crypto');
-const path = require('path');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+import multer from 'multer';
+import { GridFSBucket } from 'mongodb';
+import { GridFsStorage } from 'multer-gridfs-storage';
+import crypto from 'crypto';
+import path from 'path';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 dotenv.config(); // Load environment variables
 
@@ -95,7 +43,7 @@ const getFile = async (req, res) => {
     try {
         console.log('Fetching file:', req.params.filename); // Log the filename being fetched
         const conn = mongoose.connection;
-        const gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+        const gfs = new GridFSBucket(conn.db, {
             bucketName: 'uploads'
         });
 
@@ -113,4 +61,4 @@ const getFile = async (req, res) => {
     }
 };
 
-module.exports = { upload, uploadFile, getFile };
+export { upload, uploadFile, getFile };

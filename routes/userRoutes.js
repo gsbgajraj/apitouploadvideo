@@ -1,21 +1,11 @@
-// const express = require('express');
-// const { upload, uploadFile, getFile } = require('../controllers/uploadController');
 
-// const router = express.Router();
-
-// router.post('/upload', upload.single('file'), uploadFile);
-// router.get('/file/:filename', getFile);
-
-// module.exports = router;
-
-const express = require('express');
-const { upload, uploadFile, getFile } = require('../controllers/uploadController');
+import express from 'express';
+import { upload, uploadFile, getFile } from '../controllers/uploadController.js';
 
 const router = express.Router();
 
 router.post('/upload', upload.single('file'), uploadFile);
 router.get('/file/:filename', getFile);
 
-module.exports = router;
-
+export default router;
 
